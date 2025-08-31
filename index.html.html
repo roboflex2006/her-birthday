@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday Rose Garg</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #ffe3ed;
+      overflow-x: hidden;
+    }
+    .intro, .container, .letter { padding: 20px; text-align: center; }
+    .intro {
+      min-height: 100vh;
+      background: linear-gradient(#fce4ec, #f8bbd0);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      animation: fadeIn 2s ease-in-out;
+    }
+    .intro h1 { font-size: 2.2rem; color: #880e4f; font-family: 'Georgia'; margin-bottom: 10px; }
+    .intro p { font-size: 1rem; color: #4a148c; margin-bottom: 20px; }
+    .container {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      transition: background 1s;
+      padding-bottom: 40px;
+    }
+    .slide { display: none; flex-direction: column; align-items: center; }
+    .slide.active { display: flex; animation: fadeIn 1s ease-in-out; }
+    img {
+      width: auto;
+      max-width: 90vw;
+      max-height: 50vh;
+      object-fit: contain;
+      background: transparent;
+      border-radius: 30px;
+      border: 8px solid #f8bbd0; /* pastel pink border */
+      box-shadow: 0 0 30px 5px #ffe3ed, 0 0 0 10px #f3b7cf inset;
+      margin-bottom: 15px;
+      padding: 8px;
+    }
+    h2 { font-size: 1.5rem; color: #880e4f; position: relative; }
+    h2::before {
+      content: '👑';
+      position: absolute;
+      top: -25px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 1.2rem;
+    }
+    p { font-size: 0.95rem; color: #4a148c; max-width: 90vw; margin: 0 auto; padding: 0 10px; }
+    .controls {
+      margin-top: 15px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+    button {
+      padding: 10px 18px;
+      background: #ec407a;
+      border: none;
+      color: white;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    .night-mode {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      background: #4a148c;
+      color: white;
+      padding: 8px 15px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    .letter {
+      background: #fff3f8;
+      margin: 20px auto;
+      border-radius: 15px;
+      max-width: 90vw;
+      font-size: 1rem;
+      color: #880e4f;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    #countdown {
+      font-size: 1.2rem;
+      color: #d81b60;
+      margin-top: 10px;
+    }
+    .floating .petal {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      background: pink;
+      border-radius: 50%;
+      animation: fall 10s linear infinite;
+    }
+    @keyframes fall { to { transform: translateY(100vh) rotate(360deg); opacity: 0; } }
+    @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
+    .night {
+      background: linear-gradient(135deg, #23234a 0%, #1e1e2f 100%);
+      transition: background 1s;
+      overflow: hidden;
+    }
+    .night .container {
+      background: rgba(30,30,47,0.7) !important;
+    }
+    .night .slide h2,
+    .night .slide p,
+    .night .letter,
+    .night #countdown {
+      color: #fff !important;
+    }
+    .star {
+      position: absolute;
+      border-radius: 50%;
+      animation: fallStar 4s linear infinite;
+      opacity: 0.9;
+      background: #fff;
+      box-shadow: 0 0 12px 4px #fff, 0 0 24px 8px #ffd700;
+    }
+    @keyframes fallStar {
+      to { transform: translateY(100vh) scale(0.7) rotate(360deg); opacity: 0; }
+    }
+    @media (max-width: 500px) {
+      .intro h1 { font-size: 1.8rem; }
+      .intro p, p { font-size: 0.9rem; }
+      .controls button { font-size: 0.9rem; padding: 8px 14px; }
+      h2 { font-size: 1.3rem; }
+    }
+  </style>
+</head>
+<body>
+  <audio autoplay loop>
+    <source src="https://www.bensound.com/bensound-music/bensound-sunny.mp3" type="audio/mpeg">
+  </audio>
+
+  <div class="floating" id="floating"></div>
+
+  <div class="intro">
+    <h1>Once Upon A Time...</h1>
+    <!-- Badass gangster theme photo and icons -->
+    <div style="margin: 18px 0;">
+      <img src="ROSE PHOTOS/photo.jpeg" alt="Gangster Rose" style="max-width:220px; border-radius:18px; border:4px solid #222; box-shadow:0 0 18px #222;">
+      <div style="margin-top:8px; font-size:2rem;">
+        <span style="margin:0 8px;">🔫</span>
+        <span style="margin:0 8px;">🗡️</span>
+        <span style="margin:0 8px;">💎</span>
+      </div>
+    </div>
+    <p>In a faraway land, a beautiful princess named Rose Aka Gulaabo was born on 12th September 2006.<br>This is her fairytale, filled with love, laughter, and dreams.</p>
+    <div id="countdown"></div>
+    <button onclick="startShow()">Start the Magic</button>
+  </div>
+
+  <div class="container" id="slide-container">
+    <div class="slide"><img src="ROSE PHOTOS/photo1.jpeg"><h2>September 1</h2><p>Starting with my queen’s elegance – even her nails celebrate in style ✨💅.</p></div>
+    <div class="slide"><img src="ROSE PHOTOS/photo2.jpeg"><h2>September 2</h2><p>You looked like a princess on that day, and my heart melted.</p></div>
+    <div class="slide"><img src="ROSE PHOTOS/photo3.jpeg"><h2>September 3</h2><p>Beauty holding beauty, double the charm 🌹✨.</p></div>
+    <div class="slide"><img src="ROSE PHOTOS/photo4.jpeg"><h2>September 4</h2><p>Even the smileys know where they belong… on the face that makes the whole world smile. Her cuteness isn’t just in her looks, it’s in the way she lights up every little corner of life ✨💛.</p></div>
+    <div class="slide"><img src="ROSE PHOTOS/photo5.jpeg"><h2>September 5</h2><p>Every moment with you is my favourite scene.</p></div>
+    <div class="slide"><img src="ROSE PHOTOS/photo6.jpeg"><h2>September 6</h2><p>Even Cinderella would envy your glow here.</p></div>
+    <div class="slide"><img src="ROSE PHOTOS/photo7.jpeg"><h2>September 7</h2><p>The way you looked at me... I still melt.</p></div>
+    <div class="slide"><img src="ROSE PHOTOS/photo8.jpeg"><h2>September 8</h2><p>In your eyes, I see home, dreams, and forever.</p></div>
+    <div class="slide"><img src="ROSE PHOTOS/photo9.jpeg"><h2>September 9</h2><p>A princess so real, even Disney couldn’t write you better.</p></div>
+    <div class="slide"><img src="ROSE PHOTOS/photo10.jpeg"><h2>September 10</h2><p>This was a day I never wanted to end.</p></div>
+    <div class="slide"><img src="ROSE PHOTOS/photo11.jpeg"><h2>September 11</h2><p>Sunflowers finally found their reason to smile 🌼🥰.</p></div>
+    <div class="slide"><img src="ROSE PHOTOS/photo12.jpeg"><h2>September 12</h2><p>Happy Birthday to the most beautiful girl ever 🌹💫. Today isn't just your day, it's the day the world became brighter because of you. You carry a beauty that isn’t just in your smile or your eyes, but in the way you move, the way you carry yourself, the grace that makes you unforgettable.
+
+You're elegance, you're charm, you're everything rare and special in one person. On this day, I celebrate you the prettiest, the kindest, most magical part of my world. Wishing you all the love, joy, and happiness you deserve today and always ✨</p></div>
+    <div class="slide"><img src="ROSE PHOTOS/photo13.jpeg"><h2>September 13</h2><p> To be loved by you is magic itself your beauty, your elegance, your little cuteness all wrapped into one perfect dream🌸.</p></div>
+    <div class="slide"><img src="ROSE PHOTOS/photo14.jpeg"><h2>September 14</h2><p>Your laughter is the soundtrack of my happiest memories.</p></div>
+    <div class="slide"><img src="ROSE PHOTOS/photo15.jpeg"><h2>September 15</h2><p>Gangster diva… stealing hearts without even trying 🔥🖤.</p></div>
+    <div class="slide"><img src="ROSE PHOTOS/photo16.jpeg"><h2>September 16</h2><p>With you, every moment sparkles like a Disney dream.</p></div>
+    <div class="slide"><img src="ROSE PHOTOS/photo17.jpeg"><h2>September 17</h2><p>She doesn't even need a crown, her beauty and those eyes already make her a queen.</p></div>
+    <div class="slide"><img src="ROSE PHOTOS/photo18.jpeg"><h2>September 18</h2><p>Thank you for being my princess every single day.</p></div>
+    <div class="slide"><img src="ROSE PHOTOS/photo19.jpeg"><h2>September 19</h2><p>Every smile, every hug, every memory—pure magic.</p></div>
+    <div class="slide"><img src="ROSE PHOTOS/photo20.jpeg"><h2>September 20</h2><p>DIVA 💅🏻🎀🔥!</p></div>
+    <div class="slide"><img src="ROSE PHOTOS/photo21.jpeg"><h2>September 21</h2><p>Gangster lady or whatt??.</p></div>
+    <div class="slide"><img src="ROSE PHOTOS/photo22.jpeg"><h2>September 22</h2><p>With you, every day is a celebration.</p></div>
+    <div class="slide"><img src="ROSE PHOTOS/photo23.jpeg"><h2>September 23</h2><p>Princess moments, every single day.</p></div>
+    <div class="slide"><img src="ROSE PHOTOS/photo24.jpeg"><h2>September 24</h2><p>Our story is written in smiles and laughter.</p></div>
+    <div class="slide"><img src="ROSE PHOTOS/photo25.jpeg"><h2>September 25</h2><p>Every adventure with you is magical.</p></div>
+    <div class="slide"><img src="ROSE PHOTOS/photo26.jpeg"><h2>September 26</h2><p>Thank you for making my world beautiful.</p></div>
+    <div class="slide"><img src="ROSE PHOTOS/photo27.jpeg"><h2>September 27</h2><p>With you, every day is a fairytale come true.</p></div>
+    <div class="slide"><img src="ROSE PHOTOS/photo28.jpeg"><h2>September 28</h2><p>Even Disney movies look dull compared to your story. you're my favorite Disney character.</p></div>
+    <div class="slide"><img src="ROSE PHOTOS/photo29.jpeg"><h2>September 29</h2><p>Thank you for being my happily ever after.</p></div>
+    <div class="slide"><img src="ROSE PHOTOS/photo30.jpeg"><h2>September 30</h2><p>And that's the end of this little surprise 🎁 But the truth is. Let it be I'll tell u in my inbox. Happy Birthday again Rose ❤️!</p></div>
+
+    <div class="controls">
+      <button onclick="prevSlide()">Previous</button>
+      <button onclick="nextSlide()">Next</button>
+    </div>
+  </div>
+
+  <div class="night-mode" onclick="toggleNightMode()">Toggle Night Mode</div>
+
+  <div class="letter">
+    <h2>My Letter to You</h2>
+    <p>My dearest Rose,<br><br>
+    Every day with you feels like a fairytale. You are brave, beautiful, kind, and so full of magic. I cherish every memory we have, and I can’t wait to create many more with you.<br><br>
+    You are my Disney princess, and I will always be your side.<br><br>
+    Love you forever,<br>
+    — Your Ranjeet 💖</p>
+  </div>
+
+  <script>
+    const container = document.getElementById('slide-container');
+    const intro = document.querySelector('.intro');
+    const slides = document.querySelectorAll('.slide');
+    const bgColors = ['#ffe3ed','#f8cddc','#f3b7cf','#f0a1c3','#ec8bb8','#e875ad','#f6adc6','#f9c1d5','#fdcfe0','#ffc7d8','#ffb2ca','#ff9bbd'];
+    let currentSlide = 0;
+
+    function startShow() {
+      intro.style.display = 'none';
+      container.style.display = 'flex';
+      showSlide(currentSlide);
+    }
+
+    function showSlide(index) {
+      slides.forEach((slide, i) => {
+        slide.classList.remove('active');
+        if (i === index) slide.classList.add('active');
+      });
+      container.style.background = bgColors[index % bgColors.length];
+    }
+
+    function nextSlide() {
+      currentSlide = (currentSlide + 1) % slides.length;
+      showSlide(currentSlide);
+    }
+
+    function prevSlide() {
+      currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+      showSlide(currentSlide);
+    }
+
+    function createFloatingElements(isNight) {
+      floating.innerHTML = '';
+      for (let i = 0; i < 40; i++) {
+        const elem = document.createElement('div');
+        if (isNight) {
+          elem.classList.add('star');
+          elem.style.width = elem.style.height = (5 + Math.random() * 7) + 'px';
+          // Slow down stars: increase animation duration
+          elem.style.animationDuration = (5 + Math.random() * 4) + 's';
+        } else {
+          elem.classList.add('petal');
+          elem.style.background = 'pink';
+          elem.style.width = elem.style.height = '12px';
+          elem.style.animationDuration = (5 + Math.random() * 5) + 's';
+        }
+        elem.style.left = Math.random() * 100 + 'vw';
+        elem.style.top = '-' + Math.random() * 100 + 'px';
+        floating.appendChild(elem);
+      }
+    }
+
+    // Initial petals
+    const floating = document.getElementById('floating');
+    createFloatingElements(false);
+
+    function toggleNightMode() {
+      document.body.classList.toggle('night');
+      if (document.body.classList.contains('night')) {
+        container.style.color = '#fff';
+        createFloatingElements(true); // stars
+      } else {
+        container.style.color = '#4a148c';
+        createFloatingElements(false); // petals
+      }
+    }
+
+    const countdownEl = document.getElementById("countdown");
+    // Fix: Set birthday to 13th September 00:00 to include all of 12th September
+    const birthday = new Date("2025-09-12T00:00:00").getTime();
+    setInterval(() => {
+      const now = new Date().getTime();
+      const gap = birthday - now;
+      if (gap < 0) {
+        countdownEl.innerHTML = "Happy Birthday, Rose!";
+        return;
+      }
+      const days = Math.floor(gap / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((gap % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((gap % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((gap % (1000 * 60)) / 1000);
+      countdownEl.innerHTML = `Countdown to Rose's Birthday: ${days}d ${hours}h ${minutes}m ${seconds}s`;
+    }, 1000);
+  </script>
+</body>
+</html>
